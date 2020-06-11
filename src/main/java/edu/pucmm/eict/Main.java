@@ -15,6 +15,15 @@ public class Main {
             config.registerPlugin(new RouteOverviewPlugin("/rutas")); //aplicando plugins de las rutas
             config.enableCorsForAllOrigins();
         }).start(getHerokuAssignedPort());
+
+        //creando el manejador
+        app.get("/", ctx -> ctx.redirect("/crud-simple/"));
+
+
+        new CrudTradicionalControlador(app).aplicarRutas();
+        new CompraControlador(app).aplicarRutas();
+        new CarritoControlador(app).aplicarRutas();
+
     }
     /**
      * Metodo para indicar el puerto en Heroku

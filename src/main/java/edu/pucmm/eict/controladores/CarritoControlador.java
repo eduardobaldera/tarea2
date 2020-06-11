@@ -11,28 +11,21 @@ import java.util.List;
 import java.util.Map;
 import static io.javalin.apibuilder.ApiBuilder.*;
 
-/**
- * Representa las rutas para manejar las operaciones de petición - respuesta.
- */
-public class CrudTradicionalControlador extends BaseControlador {
-
+public class CarritoControlador extends BaseControlador {
     FakeServices fakeServices = FakeServices.getInstancia();
 
-    public CrudTradicionalControlador(Javalin app) {
+    public CarritoControlador(Javalin app) {
         super(app);
     }
 
-    /**
-     * Las clases que implementan el sistema de plantilla están agregadas en PlantillasControlador.
-     */
     @Override
     public void aplicarRutas() {
         app.routes(() -> {
-            path("/crud-simple/", () -> {
+            path("/carrito/", () -> {
 
 
                 get("/", ctx -> {
-                    ctx.redirect("/crud-simple/listar");
+                    ctx.redirect("/carrito/listar");
                 });
 
                 get("/listar", ctx -> {
@@ -43,7 +36,7 @@ public class CrudTradicionalControlador extends BaseControlador {
                     modelo.put("titulo", "Listado de Productos");
                     modelo.put("lista", lista);
                     //enviando al sistema de plantilla.
-                    ctx.render("/templates/crud-tradicional/listar.html", modelo);
+                    ctx.render("/templates/crud-tradicional/carrito.html", modelo);
                 });
 
                 get("/crear", ctx -> {
@@ -96,6 +89,18 @@ public class CrudTradicionalControlador extends BaseControlador {
                     ctx.render("/templates/crud-tradicional/crearEditarVisualizar.html", modelo);
                 });
 
+                get("/carrito/:id", ctx -> {
+                    Producto producto = fakeServices.getProductoPorId(ctx.pathParam("id", Integer.class).get());
+                    //
+                    Map<String, Object> modelo = new HashMap<>();
+                    modelo.put("titulo", "Carrito de Compras");
+                    modelo.put("producto", producto);
+                    //modelo.put("accion", "/crud-simple/editar");
+
+                    //enviando al sistema de ,plantilla.
+                    ctx.render("/templates/crud-tradicional/crearEditarVisualizar.html", modelo);
+                });
+
                 /**
                  * Proceso para editar un estudiante.
                  */
@@ -122,4 +127,5 @@ public class CrudTradicionalControlador extends BaseControlador {
             });
         });
     }
+
 }

@@ -1,6 +1,7 @@
 package edu.pucmm.eict.encapsulaciones;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Producto {
 
@@ -41,4 +42,24 @@ public class Producto {
         this.precio = precio;
     }
 
+    public void mezclar(Producto p){
+        id = p.getId();
+        nombre = p.getNombre();
+        precio = p.getPrecio();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Producto that = (Producto) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
+
+
