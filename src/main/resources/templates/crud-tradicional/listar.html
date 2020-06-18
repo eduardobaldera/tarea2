@@ -6,16 +6,11 @@
     </head>
     <body>
 
+    <div th:insert="/templates/crud-tradicional/plantilla.html::header"></div>
+    <br>
     <div class="container">
         <div class="jumbotron">
-            <a href="/comprar/"> Comprar </a>
-            <a href="/crud-simple/"> Administrar Productos </a>
-            <a href="/carrito/"> Carrito </a>
-            <a href="/login/"> login </a>
-            <br>
             <h1 class="display-4" th:text="${titulo}">....</h1>
-            <p class="lead">Listado de los Productos</p>
-
             <br>
 
         <a href="/crud-simple/crear" class="btn btn-primary">Nuevo Producto</a>

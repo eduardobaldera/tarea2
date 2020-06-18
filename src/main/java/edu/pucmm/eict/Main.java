@@ -1,14 +1,15 @@
 package edu.pucmm.eict;
 
 import edu.pucmm.eict.controladores.*;
+import edu.pucmm.eict.encapsulaciones.CarroCompra;
+import edu.pucmm.eict.encapsulaciones.Producto;
 import io.javalin.Javalin;
 import io.javalin.core.util.RouteOverviewPlugin;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        String mensaje = "Hola Mundo en Javalin :-D";
-        System.out.println(mensaje);
-
         //Creando la instancia del servidor.
         Javalin app = Javalin.create(config ->{
             config.addStaticFiles("/publico"); //desde la carpeta de resources
@@ -17,12 +18,15 @@ public class Main {
         }).start(getHerokuAssignedPort());
 
         //creando el manejador
-        app.get("/", ctx -> ctx.redirect("/crud-simple/"));
+        app.get("/", ctx -> {
+            List<Producto> productosIniciales = new ArrayList<Producto>();
+            ctx.sessionAttribute("carrito", new CarroCompra(1, productosIniciales));
+            ctx.redirect("/tarea2/");
+        });
 
 
         new CrudTradicionalControlador(app).aplicarRutas();
-        new CompraControlador(app).aplicarRutas();
-        new CarritoControlador(app).aplicarRutas();
+
 
     }
     /**

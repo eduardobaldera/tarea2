@@ -32,8 +32,8 @@
                 <input th:readonly="${visualizar}" th:value="${producto} ? ${producto.precio} : ''" type="text"  name="carrera" class="form-control" id="carreraForm">
             </div>
             <!-- Los botones para la creación del producto -->
-            <button th:if="${!visualizar}" type="submit" class="btn btn-primary">Crear</button>
-            <a href="/crud-simple/" class="btn btn-primary">Cancelar</a>
+            <button th:if="${!visualizar}" type="submit" class="btn btn-primary">Guardar</button>
+            <a href="/tarea2/" class="btn btn-primary">Cancelar</a>
         </form>
     </div>
 

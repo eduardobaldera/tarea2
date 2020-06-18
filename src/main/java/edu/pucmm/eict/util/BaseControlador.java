@@ -1,7 +1,9 @@
-package edu.pucmm.eict.servicios;
+package edu.pucmm.eict.util;
+
 import io.javalin.Javalin;
 
 public abstract class BaseControlador {
+
     protected Javalin app;
 
     public BaseControlador(Javalin app){

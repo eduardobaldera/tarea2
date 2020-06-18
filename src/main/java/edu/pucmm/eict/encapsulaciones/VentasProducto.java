@@ -3,16 +3,16 @@ package edu.pucmm.eict.encapsulaciones;
 import java.util.Date;
 import java.util.List;
 
-public class ventasProductos {
+public class VentasProducto {
     long id;
     Date fechaCompra;
     String nombreCliente;
     List<Producto> listaProductos;
 
-    public ventasProductos() {
+    public VentasProducto() {
     }
 
-    public ventasProductos(long id, Date fechaCompra, String nombreCliente, List<Producto> listaProductos) {
+    public VentasProducto(long id, Date fechaCompra, String nombreCliente, List<Producto> listaProductos) {
         this.id = id;
         this.fechaCompra = fechaCompra;
         this.nombreCliente = nombreCliente;

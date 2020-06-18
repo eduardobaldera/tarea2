@@ -6,18 +6,14 @@
 </head>
 <body>
 
+<div th:insert="/templates/crud-tradicional/plantilla.html::header"></div>
+<br>
 <div class="container">
     <div class="jumbotron">
-        <a href="/comprar/"> Comprar </a>
-        <a href="/crud-simple/"> Administrar Productos </a>
-        <a href="/carrito/"> Carrito </a>
-        <a href="/login/"> login </a>
-        <br>
         <h1 class="display-4" th:text="${titulo}">....</h1>
-        <p class="lead">Carrito de Compras</p>
-
         <br>
 
+        <a href="/crud-simple/crear" class="btn btn-primary">Nuevo Producto</a>
         <table class="table table-striped">
 
             <br>
@@ -26,6 +22,7 @@
                 <th scope="col">ID</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Precio</th>
+                <th scope="col">Cantidad</th>
                 <th scope="col">Acciones</th>
             </tr>
             </thead>
@@ -37,8 +34,10 @@
                 <td th:text="${producto.nombre}">Producto</td>
                 <td th:text="${producto.precio}">Precio</td>
                 <td>
-                    <a th:text="Editar" th:href="'editar/'+${producto.id}" th class="btn btn-secondary btn-sm"/> |
-                    <a th:text="Eliminar" th:href="'eliminar/'+${producto.id}" th class="btn btn-danger btn-sm"/>
+                    <input class="form-control" type="number">
+                </td>
+                <td>
+                    <a th:text="Anadir al Carrito" th:href="'editar/'+${producto.id}" th class="btn btn-secondary btn-sm"/>
                 </td>
             </tr>
             </tbody>

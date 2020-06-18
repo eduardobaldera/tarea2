@@ -1,6 +1,8 @@
 package edu.pucmm.eict.controladores;
 
+import edu.pucmm.eict.encapsulaciones.CarroCompra;
 import edu.pucmm.eict.encapsulaciones.Producto;
+import edu.pucmm.eict.encapsulaciones.Usuario;
 import edu.pucmm.eict.servicios.FakeServices;
 import edu.pucmm.eict.util.BaseControlador;
 import io.javalin.Javalin;
@@ -28,12 +30,43 @@ public class CrudTradicionalControlador extends BaseControlador {
     @Override
     public void aplicarRutas() {
         app.routes(() -> {
-            path("/crud-simple/", () -> {
+            path("/tarea2/", () -> {
 
 
                 get("/", ctx -> {
-                    ctx.redirect("/crud-simple/listar");
+                    ctx.redirect("/tarea2/listar");
                 });
+
+                // Render de Login de usuarios
+                // http://localhost:7000/usuarios/login/
+                get("tarea2/usuarios/login/", ctx -> {
+                    //CarroCompra carrito = ctx.sessionAttribute("carrito");
+                    Map<String, Object> modelo = new HashMap<>();
+                    //modelo.put("usr", false);
+                    //modelo.put("admin", false);
+                    //modelo.put("title", "Login de Usuario");
+                    //contexto.put("cantidad", carrito.getListaProductos().size());
+                    ctx.render("/templates/crud-tradicional/login.html", modelo);
+                });
+
+                // Manejo de Login de usuarios
+                // http://localhost:7000/api/usuarios/login/
+                post("/usuarios/login/", ctx -> {
+                    String usr = ctx.formParam("usuario");
+                    String passw = ctx.formParam("password");
+                    Usuario tmp = fakeServices.loginUsuario(usr, passw);
+                    ctx.sessionAttribute("usuario", tmp);
+                    ctx.redirect("/");
+                });
+
+                // Logout de usuarios
+                // http://localhost:7000/api/usuarios/logout/
+                get("/usuarios/logout/", ctx -> {
+                    Usuario usr = ctx.sessionAttribute("usuario");
+                    fakeServices.logoutUsuario();
+                    ctx.redirect("/api/usuarios/login/");
+                });
+
 
                 get("/listar", ctx -> {
                     //tomando el parametro utl y validando el tipo.
@@ -68,7 +101,7 @@ public class CrudTradicionalControlador extends BaseControlador {
                     Producto tmp = new Producto(matricula, nombre, precio);
                     //realizar algún tipo de validación...
                     fakeServices.crearProducto(tmp); //puedo validar, existe un error enviar a otro vista.
-                    ctx.redirect("/crud-simple/");
+                    ctx.redirect("/tarea2/");
                 });
 
                 get("/visualizar/:id", ctx -> {
@@ -78,7 +111,7 @@ public class CrudTradicionalControlador extends BaseControlador {
                     modelo.put("titulo", "Formulario Visualizar Producto "+ producto.getId());
                     modelo.put("producto", producto);
                     modelo.put("visualizar", true); //para controlar en el formulario si es visualizar
-                    modelo.put("accion", "/crud-simple/");
+                    modelo.put("accion", "/tarea2/");
 
                     //enviando al sistema de ,plantilla.
                     ctx.render("/templates/crud-tradicional/crearEditarVisualizar.html", modelo);
@@ -90,14 +123,14 @@ public class CrudTradicionalControlador extends BaseControlador {
                     Map<String, Object> modelo = new HashMap<>();
                     modelo.put("titulo", "Formulario Editar Producto "+producto.getId());
                     modelo.put("producto", producto);
-                    modelo.put("accion", "/crud-simple/editar");
+                    modelo.put("accion", "/tarea2/editar");
 
                     //enviando al sistema de ,plantilla.
                     ctx.render("/templates/crud-tradicional/crearEditarVisualizar.html", modelo);
                 });
 
                 /**
-                 * Proceso para editar un estudiante.
+                 * Proceso para editar un producto.
                  */
                 post("/editar", ctx -> {
                     //obteniendo la información enviada.
@@ -108,7 +141,7 @@ public class CrudTradicionalControlador extends BaseControlador {
                     Producto tmp = new Producto(id, nombre, precio);
                     //realizar algún tipo de validación...
                     fakeServices.actualizarProducto(tmp); //puedo validar, existe un error enviar a otro vista.
-                    ctx.redirect("/crud-simple/");
+                    ctx.redirect("/tarea2/");
                 });
 
                 /**
@@ -116,7 +149,7 @@ public class CrudTradicionalControlador extends BaseControlador {
                  */
                 get("/eliminar/:matricula", ctx -> {
                     fakeServices.eliminandoProducto(ctx.pathParam("matricula", Integer.class).get());
-                    ctx.redirect("/crud-simple/");
+                    ctx.redirect("/tarea2/");
                 });
 
             });
