@@ -39,7 +39,7 @@ public class CrudTradicionalControlador extends BaseControlador {
 
                 // Render de Login de usuarios
                 // http://localhost:7000/usuarios/login/
-                get("tarea2/usuarios/login/", ctx -> {
+                get("/login/", ctx -> {
                     //CarroCompra carrito = ctx.sessionAttribute("carrito");
                     Map<String, Object> modelo = new HashMap<>();
                     //modelo.put("usr", false);
@@ -73,17 +73,55 @@ public class CrudTradicionalControlador extends BaseControlador {
                     List<Producto> lista = fakeServices.listarProducto();
                     //
                     Map<String, Object> modelo = new HashMap<>();
-                    modelo.put("titulo", "Listado de Productos");
+                    modelo.put("titulo", "Administrar Productos");
                     modelo.put("lista", lista);
                     //enviando al sistema de plantilla.
                     ctx.render("/templates/crud-tradicional/listar.html", modelo);
+                });
+
+                get("/comprar", ctx -> {
+                    //tomando el parametro utl y validando el tipo.
+                    List<Producto> lista = fakeServices.listarProducto();
+                    //
+                    Map<String, Object> modelo = new HashMap<>();
+                    modelo.put("titulo", "Listado de Productos");
+                    modelo.put("lista", lista);
+                    //enviando al sistema de plantilla.
+                    ctx.render("/templates/crud-tradicional/comprar.html", modelo);
+                });
+
+                //Agregando un producto al carrito
+
+                post("/agregar/:id", ctx -> {
+                    CarroCompra carrito = ctx.sessionAttribute("carrito");
+                    Producto preprod = fakeServices.getProductoPorId(ctx.pathParam("id", Integer.class).get());
+                    int cantidad = Integer.parseInt(ctx.formParam("cantidad"));
+                    //agregar cantidad
+                    Producto producto = new Producto(preprod.getId(), preprod.getNombre(), preprod.getPrecio());
+                    carrito.getListaProductos().add(producto);
+                    ctx.redirect("/tarea2/listar/");
+                });
+
+
+                // Carrito de compras
+                // http://localhost:7000/api/carrito
+                get("/carrito/", ctx -> {
+                    CarroCompra carrito = ctx.sessionAttribute("carrito");
+                    Map<String, Object> contexto = new HashMap<>();
+                    contexto.put("titulo", "Carrito de Compra");
+                    contexto.put("carrito", carrito);
+                    contexto.put("cantidad", carrito.getListaProductos().size());
+                    contexto.put("usr", fakeServices.getUsr());
+                    contexto.put("admin", fakeServices.getAdm());
+                    contexto.put("usuario", ctx.sessionAttribute("usuario"));
+                    ctx.render("/templates/crud-tradicional/carrito.html", contexto);
                 });
 
                 get("/crear", ctx -> {
                     //
                     Map<String, Object> modelo = new HashMap<>();
                     modelo.put("titulo", "Registrar Producto");
-                    modelo.put("accion", "/crud-simple/crear");
+                    modelo.put("accion", "/tarea2/crear");
                     //enviando al sistema de plantilla.
                     ctx.render("/templates/crud-tradicional/crearEditarVisualizar.html", modelo);
                 });

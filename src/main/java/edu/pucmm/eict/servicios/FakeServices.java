@@ -103,4 +103,12 @@ public class FakeServices {
         adm = false;
     }
 
+    public boolean getUsr() { return usr; }
+
+    public void setUsr(boolean loggeado) { usr = loggeado; }
+
+    public boolean getAdm() { return adm; }
+
+    public void setAdm(boolean admin) { adm = admin; }
+
 }

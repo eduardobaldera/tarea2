@@ -6,14 +6,10 @@
     <body>
 
     <div class="container">
-        <div class="jumbotron">
-            <h1 class="display-4" th:text="${titulo}">....</h1>
-            <a href="/comprar/"> Comprar </a>
-            <a href="/crud-simple/"> Administrar Productos </a>
-            <a href="/carrito/"> Carrito </a>
-            <a href="/login/"> login </a>
-
-        </div>
+        <div class="container">
+            <div class="jumbotron">
+                <h1 class="display-4" th:text="${titulo}">....</h1>
+            </div>
 
         <!-- El endpoint que estará procesando el formulario será enviado por el controlador      -->
         <form enctype="application/x-www-form-urlencoded" method="post" th:attr="action=${accion}" >
