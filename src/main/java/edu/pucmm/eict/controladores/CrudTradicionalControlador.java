@@ -8,6 +8,7 @@ import edu.pucmm.eict.util.BaseControlador;
 import io.javalin.Javalin;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 public class CrudTradicionalControlador extends BaseControlador {
 
     FakeServices fakeServices = FakeServices.getInstancia();
+    CarroCompra carrito;
 
     public CrudTradicionalControlador(Javalin app) {
         super(app);
@@ -30,6 +32,15 @@ public class CrudTradicionalControlador extends BaseControlador {
     @Override
     public void aplicarRutas() {
         app.routes(() -> {
+
+            before(ctx -> {
+                carrito = ctx.sessionAttribute("carrito");
+                if(carrito == null) {
+                    List<Producto> productosIniciales = new ArrayList<Producto>();
+                    ctx.sessionAttribute("carrito", new CarroCompra(1, productosIniciales));
+                }
+            });
+
             path("/tarea2/", () -> {
 
 
@@ -51,7 +62,7 @@ public class CrudTradicionalControlador extends BaseControlador {
 
                 // Manejo de Login de usuarios
                 // http://localhost:7000/api/usuarios/login/
-                post("/usuarios/login/", ctx -> {
+                post("/login/", ctx -> {
                     String usr = ctx.formParam("usuario");
                     String passw = ctx.formParam("password");
                     Usuario tmp = fakeServices.loginUsuario(usr, passw);
@@ -61,7 +72,7 @@ public class CrudTradicionalControlador extends BaseControlador {
 
                 // Logout de usuarios
                 // http://localhost:7000/api/usuarios/logout/
-                get("/usuarios/logout/", ctx -> {
+                get("/logout/", ctx -> {
                     Usuario usr = ctx.sessionAttribute("usuario");
                     fakeServices.logoutUsuario();
                     ctx.redirect("/api/usuarios/login/");
@@ -93,13 +104,11 @@ public class CrudTradicionalControlador extends BaseControlador {
                 //Agregando un producto al carrito
 
                 post("/agregar/:id", ctx -> {
-                    CarroCompra carrito = ctx.sessionAttribute("carrito");
                     Producto preprod = fakeServices.getProductoPorId(ctx.pathParam("id", Integer.class).get());
                     int cantidad = Integer.parseInt(ctx.formParam("cantidad"));
-                    //agregar cantidad
-                    Producto producto = new Producto(preprod.getId(), preprod.getNombre(), preprod.getPrecio());
+                    Producto producto = new Producto(preprod.getId(), preprod.getNombre(), preprod.getPrecio(), cantidad);
                     carrito.getListaProductos().add(producto);
-                    ctx.redirect("/tarea2/listar/");
+                    ctx.redirect("/tarea2/comprar");
                 });
 
 
@@ -107,14 +116,14 @@ public class CrudTradicionalControlador extends BaseControlador {
                 // http://localhost:7000/api/carrito
                 get("/carrito/", ctx -> {
                     CarroCompra carrito = ctx.sessionAttribute("carrito");
-                    Map<String, Object> contexto = new HashMap<>();
-                    contexto.put("titulo", "Carrito de Compra");
-                    contexto.put("carrito", carrito);
-                    contexto.put("cantidad", carrito.getListaProductos().size());
-                    contexto.put("usr", fakeServices.getUsr());
-                    contexto.put("admin", fakeServices.getAdm());
-                    contexto.put("usuario", ctx.sessionAttribute("usuario"));
-                    ctx.render("/templates/crud-tradicional/carrito.html", contexto);
+                    Map<String, Object> modelo = new HashMap<>();
+                    modelo.put("titulo", "Carrito de Compra");
+                    modelo.put("carrito", carrito);
+                    modelo.put("cantidad", carrito.getListaProductos().size());
+                    modelo.put("usr", fakeServices.getUsr());
+                    modelo.put("admin", fakeServices.getAdm());
+                    modelo.put("usuario", ctx.sessionAttribute("usuario"));
+                    ctx.render("/templates/crud-tradicional/carrito.html", modelo);
                 });
 
                 get("/crear", ctx -> {

@@ -27,7 +27,8 @@ public class FakeServices {
     private FakeServices(){
         //añadiendo los estudiantes.
         //listaEstudiante.add(new Estudiante(20011136, "Carlos Camacho", "ITT"));
-        listaProducto.add(new Producto(0001, "Lapicero", new BigDecimal("0.03") ));
+        listaProducto.add(new Producto(0001, "Lapicero", new BigDecimal("0.03")));
+        listaProducto.add(new Producto(0002, "Mesa", new BigDecimal("0.90")));
         //anadiendo los usuarios.
         listaUsuarios.add(new Usuario("admin", "admin", "admin"));
         listaUsuarios.add(new Usuario("logueado", "logueado", "logueado"));

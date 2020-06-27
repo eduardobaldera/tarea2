@@ -31,10 +31,16 @@
                 </th>
                 <td th:text="${producto.nombre}">Producto</td>
                 <td th:text="${producto.precio}">Precio</td>
-                <td><input class="form-control" type="number"></td>
+                <td>
+                    <form enctype="application/x-www-form-urlencoded" method="post" th:attr="action=${accion}" >
+                    <div class="form-group">
+                        <input type="number" name="cantidad" class="form-control" id="matriculaForm" aria-describedby="matriculaHelp">
+                    </div>
+                    </form>
+                </td>
                 <td>
                     <a th:text="Agregar" th:href="'agregar/'+${producto.id}" th class="btn btn-secondary btn-sm"/>
-
+<!--                    <button th:if="${!visualizar}" type="submit" class="btn btn-primary">Agregar</button>-->
                 </td>
             </tr>
             </tbody>
