@@ -31,18 +31,19 @@
                 </th>
                 <td th:text="${producto.nombre}">Producto</td>
                 <td th:text="${producto.precio}">Precio</td>
-                <td> Cantidad</td>
+                <td th:text="${producto.cantidad}">Precio</td>
+                <div th:with="total_carrito = ${producto.precio}">
                 <td>
-                    <a th:text="Eliminar" th:href="'eliminar/'+${producto.id}" th class="btn btn-danger btn-sm"/>
+                    <a th:text="Eliminar" th:href="'carrito/eliminar/'+${producto.id}" th class="btn btn-danger btn-sm"/>
                 </td>
             </tr>
             </tbody>
             <tfoot>
             <tr>
-                <td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continuar Comprando</a></td>
+                <td><a href="/tarea2/comprar" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continuar Comprando</a></td>
                 <td colspan="2" class="hidden-xs"></td>
-                <td class="hidden-xs text-center"><strong>Total $0.00</strong></td>
-                <td><a href="https://www.paypal.com/webapps/hermes?token=5EY097812P7754247&useraction=commit&mfid=1546377013907_cf1dec6830d7" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+                <td class="hidden-xs text-center" th:text="${total_carrito}" ><strong>Total</strong></td>
+                <td><a href="" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
             </tr>
             </tfoot>
         </table>

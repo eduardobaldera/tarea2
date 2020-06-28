@@ -1,5 +1,6 @@
 package edu.pucmm.eict.servicios;
 
+import edu.pucmm.eict.encapsulaciones.CarroCompra;
 import edu.pucmm.eict.encapsulaciones.Producto;
 import edu.pucmm.eict.encapsulaciones.Usuario;
 import edu.pucmm.eict.encapsulaciones.VentasProducto;
@@ -19,7 +20,7 @@ public class FakeServices {
     private List<VentasProducto> listaVentas = new ArrayList<VentasProducto>();
     private boolean usr = false;
     private boolean adm = false;
-
+    private CarroCompra carrito;
 
     /**
      * Constructor privado.
@@ -54,6 +55,21 @@ public class FakeServices {
 
     public Producto getProductoPorId (int id){
         return  listaProducto.stream().filter(e -> e.getId() == id).findFirst().orElse(null);
+    }
+
+    public boolean eliminarProducto(Producto producto){
+        return listaProducto.remove(producto);
+    }
+
+    // Carrito
+
+    public Producto getProductoEnCarrito(int id){
+        return carrito.getListaProductos().stream().filter(producto -> producto.getId() == id).findFirst().orElse(null);
+    }
+
+    public void limpiarCarrito(){
+        List<Producto> tmp = new ArrayList<Producto>();
+        carrito.setListaProductos(tmp);
     }
 
     public Producto crearProducto(Producto producto){
@@ -111,5 +127,9 @@ public class FakeServices {
     public boolean getAdm() { return adm; }
 
     public void setAdm(boolean admin) { adm = admin; }
+
+    public CarroCompra getCarrito() { return carrito; }
+
+    public void setCarrito(CarroCompra cart) { this.carrito = cart; }
 
 }

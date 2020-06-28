@@ -56,6 +56,10 @@ public class Producto {
         precio = p.getPrecio();
     }
 
+    public void setCantidad(int cantidad) { this.cantidad = cantidad; }
+
+    public int getCantidad() { return cantidad; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

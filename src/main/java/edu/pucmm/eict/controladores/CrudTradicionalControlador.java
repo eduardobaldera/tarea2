@@ -116,14 +116,24 @@ public class CrudTradicionalControlador extends BaseControlador {
                 // http://localhost:7000/api/carrito
                 get("/carrito/", ctx -> {
                     CarroCompra carrito = ctx.sessionAttribute("carrito");
+                    List<Producto> lista = carrito.getListaProductos();
                     Map<String, Object> modelo = new HashMap<>();
                     modelo.put("titulo", "Carrito de Compra");
                     modelo.put("carrito", carrito);
+                    modelo.put("lista", lista);
                     modelo.put("cantidad", carrito.getListaProductos().size());
                     modelo.put("usr", fakeServices.getUsr());
                     modelo.put("admin", fakeServices.getAdm());
                     modelo.put("usuario", ctx.sessionAttribute("usuario"));
                     ctx.render("/templates/crud-tradicional/carrito.html", modelo);
+                });
+
+                get("/carrito/eliminar/:id", ctx -> {
+                    fakeServices.setCarrito(carrito);
+                    Producto tmp = fakeServices.getProductoEnCarrito(ctx.pathParam("id", Integer.class).get());
+                    fakeServices.getCarrito().borrarProducto(tmp);
+                    ctx.sessionAttribute("carrito", fakeServices.getCarrito());
+                    ctx.redirect("/tarea2/carrito");
                 });
 
                 get("/crear", ctx -> {

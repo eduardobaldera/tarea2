@@ -31,14 +31,15 @@
                 </th>
                 <td th:text="${producto.nombre}">Producto</td>
                 <td th:text="${producto.precio}">Precio</td>
-                <td>
+
                     <form method="post" id="form${producto.id}" th:action="'/tarea2/agregar/'+${producto.id}">
-                        <input type="number" min="1" class="form-control" id="cantidad" name="cantidad" value="1">
+                        <td>
+                            <input type="number" min="1" class="form-control" id="cantidad" name="cantidad" value="1">
+                        </td>
+                        <td>
+                            <button type="submit" form="form${producto.id}" class="btn btn-success">Agregar</button>
+                        </td>
                     </form>
-                </td>
-                <td>
-                    <button type="submit" form="form${producto.id}" class="btn btn-success">Agregar</button>
-                </td>
             </tr>
             </tbody>
         </table>
