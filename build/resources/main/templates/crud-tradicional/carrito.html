@@ -32,7 +32,7 @@
                 <td th:text="${producto.nombre}">Producto</td>
                 <td th:text="${producto.precio}">Precio</td>
                 <td th:text="${producto.cantidad}">Precio</td>
-                <div th:with="total_carrito = ${producto.precio}">
+                <div th:with="total_carrito = ${producto.precio}"></div>
                 <td>
                     <a th:text="Eliminar" th:href="'carrito/eliminar/'+${producto.id}" th class="btn btn-danger btn-sm"/>
                 </td>

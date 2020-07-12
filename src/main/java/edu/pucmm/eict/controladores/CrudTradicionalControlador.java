@@ -6,6 +6,8 @@ import edu.pucmm.eict.encapsulaciones.Usuario;
 import edu.pucmm.eict.servicios.FakeServices;
 import edu.pucmm.eict.util.BaseControlador;
 import io.javalin.Javalin;
+import io.javalin.plugin.rendering.JavalinRenderer;
+import io.javalin.plugin.rendering.template.JavalinFreemarker;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -20,6 +22,10 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 public class CrudTradicionalControlador extends BaseControlador {
 
     FakeServices fakeServices = FakeServices.getInstancia();
+    //Registro de sistemas de plantillas
+    private void registroPlantillas() {
+        JavalinRenderer.register(JavalinFreemarker.INSTANCE, ".ftl");
+    }
     CarroCompra carrito;
 
     public CrudTradicionalControlador(Javalin app) {
@@ -33,6 +39,7 @@ public class CrudTradicionalControlador extends BaseControlador {
     public void aplicarRutas() {
         app.routes(() -> {
 
+            //carrito en sesion
             before(ctx -> {
                 carrito = ctx.sessionAttribute("carrito");
                 if(carrito == null) {
@@ -45,7 +52,7 @@ public class CrudTradicionalControlador extends BaseControlador {
 
 
                 get("/", ctx -> {
-                    ctx.redirect("/tarea2/listar");
+                    ctx.redirect("/tarea2/comprar");
                 });
 
                 // Render de Login de usuarios
@@ -75,7 +82,7 @@ public class CrudTradicionalControlador extends BaseControlador {
                 get("/logout/", ctx -> {
                     Usuario usr = ctx.sessionAttribute("usuario");
                     fakeServices.logoutUsuario();
-                    ctx.redirect("/api/usuarios/login/");
+                    ctx.redirect("login/");
                 });
 
 
@@ -86,19 +93,24 @@ public class CrudTradicionalControlador extends BaseControlador {
                     Map<String, Object> modelo = new HashMap<>();
                     modelo.put("titulo", "Administrar Productos");
                     modelo.put("lista", lista);
+                    modelo.put("usr", fakeServices.getUsr());
+                    modelo.put("admin", fakeServices.getAdm());
+                    modelo.put("usuario", ctx.sessionAttribute("usuario"));
                     //enviando al sistema de plantilla.
-                    ctx.render("/templates/crud-tradicional/listar.html", modelo);
+                    ctx.render("/templates/crud-tradicional/listar.ftl", modelo);
                 });
 
                 get("/comprar", ctx -> {
                     //tomando el parametro utl y validando el tipo.
                     List<Producto> lista = fakeServices.listarProducto();
-                    //
                     Map<String, Object> modelo = new HashMap<>();
                     modelo.put("titulo", "Listado de Productos");
                     modelo.put("lista", lista);
+                    modelo.put("usr", fakeServices.getUsr());
+                    modelo.put("admin", fakeServices.getAdm());
+                    modelo.put("usuario", ctx.sessionAttribute("usuario"));
                     //enviando al sistema de plantilla.
-                    ctx.render("/templates/crud-tradicional/comprar.html", modelo);
+                    ctx.render("/templates/crud-tradicional/comprar.ftl", modelo);
                 });
 
                 //Agregando un producto al carrito
@@ -125,7 +137,7 @@ public class CrudTradicionalControlador extends BaseControlador {
                     modelo.put("usr", fakeServices.getUsr());
                     modelo.put("admin", fakeServices.getAdm());
                     modelo.put("usuario", ctx.sessionAttribute("usuario"));
-                    ctx.render("/templates/crud-tradicional/carrito.html", modelo);
+                    ctx.render("/templates/crud-tradicional/carrito.ftl", modelo);
                 });
 
                 get("/carrito/eliminar/:id", ctx -> {
@@ -142,7 +154,7 @@ public class CrudTradicionalControlador extends BaseControlador {
                     modelo.put("titulo", "Registrar Producto");
                     modelo.put("accion", "/tarea2/crear");
                     //enviando al sistema de plantilla.
-                    ctx.render("/templates/crud-tradicional/crearEditarVisualizar.html", modelo);
+                    ctx.render("/templates/crud-tradicional/CrearEditar.ftl", modelo);
                 });
 
                 /**
@@ -157,7 +169,7 @@ public class CrudTradicionalControlador extends BaseControlador {
                     //
                     Producto tmp = new Producto(matricula, nombre, precio);
                     //realizar algún tipo de validación...
-                    fakeServices.crearProducto(tmp); //puedo validar, existe un error enviar a otro vista.
+                    fakeServices.crearProducto(tmp);
                     ctx.redirect("/tarea2/");
                 });
 
@@ -171,19 +183,17 @@ public class CrudTradicionalControlador extends BaseControlador {
                     modelo.put("accion", "/tarea2/");
 
                     //enviando al sistema de ,plantilla.
-                    ctx.render("/templates/crud-tradicional/crearEditarVisualizar.html", modelo);
+                    ctx.render("/templates/crud-tradicional/visualizar.ftl", modelo);
                 });
 
                 get("/editar/:id", ctx -> {
                     Producto producto = fakeServices.getProductoPorId(ctx.pathParam("id", Integer.class).get());
-                    //
                     Map<String, Object> modelo = new HashMap<>();
-                    modelo.put("titulo", "Formulario Editar Producto "+producto.getId());
+                    modelo.put("titulo", "Formulario Editar Producto ");
                     modelo.put("producto", producto);
                     modelo.put("accion", "/tarea2/editar");
-
                     //enviando al sistema de ,plantilla.
-                    ctx.render("/templates/crud-tradicional/crearEditarVisualizar.html", modelo);
+                    ctx.render("/templates/crud-tradicional/CrearEditar.ftl", modelo);
                 });
 
                 /**
