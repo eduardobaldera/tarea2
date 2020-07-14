@@ -37,7 +37,7 @@
                     <a class="nav-link" href="/tarea2/listar">Administrar Productos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="carrito">Carrito</a>
+                    <a class="nav-link" href="/tarea2/carrito">Carrito</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/tarea2/ventas">Ventas</a>
@@ -63,7 +63,7 @@
                     <a class="nav-link" href="carrito">Carrito</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="login">Login</a>
+                    <a class="nav-link" href="/tarea2/login">Login</a>
                 </li>
                 </#if>
 

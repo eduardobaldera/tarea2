@@ -35,9 +35,9 @@ public class FakeServices {
         listaUsuarios.add(new Usuario("logueado", "logueado", "logueado"));
         listaUsuarios.add(new Usuario("usuario", "usuario", "usuario"));
         List<Producto> listaTemporalVenta = new ArrayList<Producto>();
-        listaTemporalVenta.add(new Producto(1, "Motherboard", new BigDecimal("9500"), 2));
-        listaTemporalVenta.add(new Producto(2, "CPU AMD Ryzen 5 3500", new BigDecimal("14350"), 1));
-        listaVentas.add(new VentasProducto(1, new Date(), "Rafael Felipe", listaTemporalVenta));
+        listaTemporalVenta.add(new Producto(1, "Cuaderno", new BigDecimal("30"), 2));
+        listaTemporalVenta.add(new Producto(2, "Lapiz", new BigDecimal("20"), 1));
+        listaVentas.add(new VentasProducto(1, new Date(), "Eduardo Baldera", listaTemporalVenta));
 
     }
 

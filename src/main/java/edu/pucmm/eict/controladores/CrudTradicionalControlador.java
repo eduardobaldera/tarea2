@@ -152,7 +152,9 @@ public class CrudTradicionalControlador extends BaseControlador {
                     Map<String, Object> modelo = new HashMap<>();
                     modelo.put("titulo", "Registrar Producto");
                     modelo.put("accion", "/tarea2/crear");
-                    //enviando al sistema de plantilla.
+                    modelo.put("usr", fakeServices.getUsr());
+                    modelo.put("admin", fakeServices.getAdm());
+                    modelo.put("usuario", ctx.sessionAttribute("usuario"));
                     ctx.render("/templates/crud-tradicional/CrearEditar.ftl", modelo);
                 });
 
@@ -191,6 +193,9 @@ public class CrudTradicionalControlador extends BaseControlador {
                     modelo.put("titulo", "Formulario Editar Producto ");
                     modelo.put("producto", producto);
                     modelo.put("accion", "/tarea2/editar");
+                    modelo.put("usr", fakeServices.getUsr());
+                    modelo.put("admin", fakeServices.getAdm());
+                    modelo.put("usuario", ctx.sessionAttribute("usuario"));
                     //enviando al sistema de ,plantilla.
                     ctx.render("/templates/crud-tradicional/CrearEditar.ftl", modelo);
                 });
