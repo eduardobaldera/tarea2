@@ -43,24 +43,24 @@
                     <a class="nav-link" href="/tarea2/ventas">Ventas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="logout">Logout: ${usuario.nombre}</a>
+                    <a class="nav-link" href="/tarea2/logout">Logout: ${usuario.nombre}</a>
                 </li>
                 <#elseif usr == true>
                  <li class="nav-item">
                     <a class="nav-link" href="/tarea2/comprar">Comprar</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="carrito">Carrito</a>
+                    <a class="nav-link" href="/tarea2/carrito">Carrito</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="logout">Logout: ${usuario.nombre}</a>
+                    <a class="nav-link" href="tarea2/logout">Logout: ${usuario.nombre}</a>
                 </li>
                 <#else>
                 <li class="nav-item">
                     <a class="nav-link" href="/tarea2/comprar">Comprar</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="carrito">Carrito</a>
+                    <a class="nav-link" href="/tarea2/carrito">Carrito</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/tarea2/login">Login</a>
