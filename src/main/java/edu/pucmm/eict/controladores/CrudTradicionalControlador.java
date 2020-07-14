@@ -3,6 +3,7 @@ package edu.pucmm.eict.controladores;
 import edu.pucmm.eict.encapsulaciones.CarroCompra;
 import edu.pucmm.eict.encapsulaciones.Producto;
 import edu.pucmm.eict.encapsulaciones.Usuario;
+import edu.pucmm.eict.encapsulaciones.VentasProducto;
 import edu.pucmm.eict.servicios.FakeServices;
 import edu.pucmm.eict.util.BaseControlador;
 import io.javalin.Javalin;
@@ -10,10 +11,8 @@ import io.javalin.plugin.rendering.JavalinRenderer;
 import io.javalin.plugin.rendering.template.JavalinFreemarker;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 /**
@@ -219,7 +218,31 @@ public class CrudTradicionalControlador extends BaseControlador {
                     ctx.redirect("/tarea2/");
                 });
 
+                post("carrito/checkout/", ctx -> {
+                    fakeServices.setCarrito(carrito);
+                    long id = fakeServices.getListaVentas().get(fakeServices.getListaVentas().size() - 1).getId() + 1;
+                    String nombreCliente = ctx.formParam("nombre");
+                    VentasProducto venta = new VentasProducto(id, new Date(), nombreCliente, fakeServices.getCarrito().getListaProductos());
+                    fakeServices.procesarVenta(venta);
+                    fakeServices.limpiarCarrito();
+                    ctx.sessionAttribute("carrito", fakeServices.getCarrito());
+                    ctx.redirect("/tarea2/carrito/");
+                });
+
+                // Listado de ventas realizadas
+                // http://localhost:7000/api/ventas
+                get("/ventas", ctx -> {
+                    Map<String, Object> contexto = new HashMap<>();
+                    contexto.put("titulo", "Listado de Ventas Realizadas");
+                    contexto.put("ventas", fakeServices.getListaVentas());
+                    contexto.put("usr", fakeServices.getUsr());
+                    contexto.put("admin", fakeServices.getAdm());
+                    contexto.put("usuario", ctx.sessionAttribute("usuario"));
+                    ctx.render("/templates/crud-tradicional/listarventas.ftl", contexto);
+                });
+
             });
+
         });
     }
 }
